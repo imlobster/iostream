@@ -7,6 +7,7 @@ class _int_cxxostream:
     def __lshift__(self, iv):
         if iv is endl:
             self.stream.write('\n')
+            self.stream.flush()
         elif iv is flush:
             self.stream.flush()
         else:
