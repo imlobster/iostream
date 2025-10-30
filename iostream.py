@@ -1,29 +1,25 @@
 import sys
 
-__all__ = [
-    'cout', 'cerr',
-    'endl', 'flush'
-]
-
-class _int_flush_impl: pass
-flush = _int_flush_impl()
-
-class _int_endl_impl: pass
-endl = _int_endl_impl()
-
 class _int_cxxostream:
     def __init__(self, istream):
         self.stream = istream
 
     def __lshift__(self, iv):
         if iv is endl:
-            print('', end='\n', file=self.stream, flush=True)
+            self.stream.write('\n')
         elif iv is flush:
             self.stream.flush()
         else:
-            print(str(iv), end='', file=self.stream, flush=False)
+            self.stream.write(str(iv))
         return self
 
+flush = object()
+endl = object()
 
 cout = _int_cxxostream(sys.stdout)
 cerr = _int_cxxostream(sys.stderr)
+
+__all__ = [
+    'cout', 'cerr',
+    'endl', 'flush'
+]
